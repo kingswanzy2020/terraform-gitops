@@ -1,0 +1,33 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      # Validate YAML syntax across the project
+      - id: check-yaml
+      # Flag unresolved merge conflict markers
+      - id: check-merge-conflict
+      # Remove trailing whitespace from lines
+      - id: trailing-whitespace
+      # Ensure files end with a newline
+      - id: end-of-file-fixer
+      # Detect accidentally committed AWS credentials
+      - id: detect-aws-credentials
+        args: ["--allow-missing-credentials"]
+      # Detect accidentally committed private keys
+      - id: detect-private-key
+
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.105.0
+    hooks:
+      # Auto-format Terraform files to canonical style
+      - id: terraform_fmt
+      # Run terraform validate on each module
+      - id: terraform_validate
+        args:
+          - --hook-config=--retry-once-with-cleanup=true
+      # Run tflint with the project-level config
+      - id: terraform_tflint
+        args:
+          - --args=--config=__GIT_WORKING_DIR__/.tflint.hcl
+      # Run checkov security scanner
+      - id: terraform_checkov
