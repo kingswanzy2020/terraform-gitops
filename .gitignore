@@ -1,0 +1,12 @@
+# Terraform local directories and state
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfplan
+
+# Sensitive variable files
+*.tfvars
+!*.tfvars.example
+
+# OS files
+.DS_Store
