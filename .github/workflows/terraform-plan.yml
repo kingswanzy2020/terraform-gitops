@@ -8,6 +8,7 @@ on:
       - "modules/**"
       - "environments/**"
       - ".github/workflows/**"
+      - ".checkov.yaml"
 
 permissions:
   id-token: write
@@ -33,20 +34,21 @@ jobs:
           tflint_version: latest
 
       - name: Init TFLint
-        run: tflint --init
+        run: tflint --init --config .tflint.hcl
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
       - name: Run TFLint
-        run: tflint --recursive --config "$(pwd)/.tflint.hcl" -f compact
+        run: tflint --recursive --config .tflint.hcl -f compact
 
       - name: Run Checkov
-        uses: bridgecrewio/checkov-action@master
+        uses: bridgecrewio/checkov-action@v12.1347.0
         with:
           directory: .
           framework: terraform
+          config_file: .checkov.yaml
           soft_fail: false
-          skip_check: CKV_AWS_144,CKV_AWS_145,CKV_AWS_382,CKV_AWS_126,CKV_AWS_135,CKV_AWS_111,CKV_AWS_356,CKV_AWS_130,CKV_AWS_62,CKV_AWS_61,CKV_AWS_11,CKV_AWS_12,CKV_AWS_18,
+          compact: true
 
   plan:
     name: Terraform Plan
