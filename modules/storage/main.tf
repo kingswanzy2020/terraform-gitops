@@ -47,3 +47,23 @@ resource "aws_s3_bucket_public_access_block" "main" {
   ignore_public_acls      = true
   restrict_public_buckets = true
 }
+
+
+resource "aws_s3_bucket_lifecycle_configuration" "main" {
+  bucket = aws_s3_bucket.main.id
+
+  rule {
+    id     = "delete-old-versions"
+    status = "Enabled"
+
+    noncurrent_version_expiration {
+      noncurrent_days = 30
+    }
+  }
+}
+
+resource "aws_s3_bucket_notification" "main" {
+  bucket = aws_s3_bucket.main.id
+
+  eventbridge = true
+}
