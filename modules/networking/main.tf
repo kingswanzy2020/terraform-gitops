@@ -25,7 +25,7 @@ resource "aws_vpc" "main" {
     Name        = "${var.project_name}-${var.environment}-vpc"
     Environment = var.environment
     ManagedBy   = "terraform"
-    Description = "Main project VPC managed by GitOps"
+    Description = "Main project VPC managed by Terraform and GitOps"
   }
 }
 
