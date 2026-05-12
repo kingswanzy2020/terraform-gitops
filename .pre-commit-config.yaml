@@ -29,7 +29,5 @@ repos:
       - id: terraform_tflint
         args:
           - --args=--config=__GIT_WORKING_DIR__/.tflint.hcl
-      # Run checkov security scanner (skips aligned with .checkov.yaml)
+      # Run checkov security scanner
       - id: terraform_checkov
-        args:
-          - --args=--config-file=__GIT_WORKING_DIR__/.checkov.yaml
