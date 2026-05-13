@@ -6,6 +6,10 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 5.0"
     }
+    random = {
+      source  = "hashicorp/random"
+      version = "~> 3.0"
+    }
   }
 
   # Store state remotely in the S3 bucket you created in Step 1
@@ -67,4 +71,14 @@ module "compute" {
   instance_profile_name = module.iam.instance_profile_name
   project_name          = var.project_name
   environment           = var.environment
+}
+
+module "database" {
+  source = "../../modules/database"
+
+  vpc_id                     = module.networking.vpc_id
+  private_subnet_ids         = module.networking.private_subnet_ids
+  allowed_security_group_ids = [module.compute.security_group_id]
+  project_name               = var.project_name
+  environment                = var.environment
 }
